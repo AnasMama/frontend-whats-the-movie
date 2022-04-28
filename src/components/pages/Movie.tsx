@@ -1,21 +1,54 @@
-import React from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { Params, useParams } from "react-router";
 import styled from "styled-components";
-import { Arrow, ButtonRed, FormContent, InputField, LabelField, Logo, RetourLink } from "../styles/input.styles";
+import {
+  Arrow,
+  ButtonRed,
+  FormContent,
+  InputField,
+  LabelField,
+  Logo,
+  RetourLink,
+} from "../styles/input.styles";
 
 const Movie: React.FC = () => {
+  const params: Readonly<Params<string>> = useParams();
+  const { movie: idMovie, theme: idTheme } = params;
+  const [movie, setMovie] = useState({ poster_path: "" });
+
+  useEffect(() => {
+    axios
+      .get(
+        `https://api.themoviedb.org/3/movie/${idMovie}?api_key=fb3bd5517db63a241a2ce4a3302e825d`
+      )
+      .then((res) => res.data)
+      .then((data) => {
+        setMovie(data);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }, []);
+  // console.log(movie);
+
   return (
     <MovieContent>
       <MovieSelector>
-        <Arrow src="src/assets/arrow.png" alt="Fleche de navigation" />
+        <Arrow src="/src/assets/arrow.png" alt="Fleche de navigation" />
+        <GuessImg
+          src={`https://image.tmdb.org/t/p/original${movie.poster_path}`}
+          alt="Film à deviner"
+        />
         <Arrow
-          src="src/assets/arrow.png"
+          src="/src/assets/arrow.png"
           alt="Fleche de navigation"
           role="true"
         />
       </MovieSelector>
       <AnswerContent>
         <Logo
-          src="src/assets/Logo_anachou_et_son_site_qui_mempeche_de_dormir.png"
+          src="/src/assets/Logo_anachou_et_son_site_qui_mempeche_de_dormir.png"
           alt="Logo jeu what's the movie"
           hide
         />
@@ -26,15 +59,15 @@ const Movie: React.FC = () => {
           </LabelField>
           <ButtonRed type="submit">Valider</ButtonRed>
         </FormAnswer>
-        <RetourLink>Retour</RetourLink>
+        <RetourLink to={`/themes/${idTheme}/level/1`}>Retour</RetourLink>
       </AnswerContent>
     </MovieContent>
   );
 };
 
 const FormAnswer = styled(FormContent)`
-    @media (max-width: 768px) {
-        gap: 1rem;
+  @media (max-width: 768px) {
+    gap: 1rem;
   }
 `;
 
@@ -44,7 +77,7 @@ const MovieContent = styled.div`
   width: 100%;
   margin: auto;
   min-height: calc(100vh - 7rem);
-  padding: 4rem 2rem;
+  padding: 2rem 4rem;
 
   @media (max-width: 768px) {
     flex-direction: column;
@@ -73,6 +106,17 @@ const AnswerContent = styled.div`
 
   @media (max-width: 768px) {
     width: 100%;
+  }
+`;
+
+const GuessImg = styled.img`
+  display: block;
+  width: 30rem;
+  /* min-width: 500px; */
+  filter: ${(imgToGuess: { blur?: string }) =>
+    imgToGuess.blur ? imgToGuess.blur : "blur(0.8rem)"};
+  @media (max-width: 768px) {
+    width: 85%;
   }
 `;
 

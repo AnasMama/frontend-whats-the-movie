@@ -13,7 +13,7 @@ const Profil = () => {
       <h1>Profil</h1>
       <ProfilInfos>
         <ProfilLeft>
-          <img src="src/assets/Unknown.png" alt="Photo de profil" />
+          <img src="/src/assets/Unknown.png" alt="Photo de profil" />
           <h1>Mes trophés</h1>
           <TrophyList></TrophyList>
         </ProfilLeft>
@@ -24,7 +24,7 @@ const Profil = () => {
           </LabelField>
           <LabelField>
             <span>Mot de passe</span>
-            <InputField type="text" placeholder="********" />
+            <InputField type="password" placeholder="********" />
           </LabelField>
           <LabelField>
             <span>Email</span>

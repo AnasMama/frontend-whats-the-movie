@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 const FormContent = styled.form`
@@ -32,6 +33,11 @@ const InputField = styled.input`
   border-radius: 2rem;
   height: 4rem;
   width: min(90%, 36rem);
+
+  &:focus {
+    outline: none !important;
+    border: 4px solid var(--main-yellow);
+  }
 
   @media (max-width: 768px) {
     height: 3rem;
@@ -74,7 +80,7 @@ const Arrow = styled.img`
   }
 `;
 
-const RetourLink = styled.span`
+const RetourLink = styled(Link)`
     font-size: 2rem;
     font-weight: 800;
 `;

@@ -1,15 +1,16 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 const NavBar: React.FC = () => {
   return (
     <NavBarContent>
       <Round>
-        <img src="src/assets/interrogation.png" alt="Point d'interrogation" />
+        <img src="/src/assets/interrogation.png" alt="Point d'interrogation" />
       </Round>
       <UserConnection>
-        <LoginLi>Inscription</LoginLi>
-        <LoginLi color="true">Connexion</LoginLi>
+        <Link to="/inscription"><LoginLi>Inscription</LoginLi></Link>
+        <Link to="/"><LoginLi color="true">Connexion</LoginLi></Link>
       </UserConnection>
     </NavBarContent>
   );
