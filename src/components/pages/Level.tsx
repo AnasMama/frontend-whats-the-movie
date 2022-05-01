@@ -1,7 +1,9 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Params, useParams } from "react-router";
 import styled from "styled-components";
+import AuthContext from "../contexts/AuthContext";
+import ListMoviesContext from "../contexts/ListMoviesContext";
 import MovieCard from "../MovieCard";
 import { Arrow, RetourLink } from "../styles/input.styles";
 
@@ -17,12 +19,13 @@ export interface MovieFind {
 const Level: React.FC = () => {
   const params: Readonly<Params<string>> = useParams();
   const idTheme: string | undefined = params.theme;
-  const [listMovies, setListMovies] = useState([]);
+  const { listMovies, setListMovies } = useContext(ListMoviesContext);
   const [level, setLevel] = useState<number>(1);
+  const { user } = useContext(AuthContext);
 
   useEffect(() => {
     axios
-      .get(`http://localhost:5000/api/themes/${idTheme}/movies/?level=${level}`)
+      .get(`http://localhost:5000/api/scores/users/${user.id}/themes/${idTheme}/?level=${level}`)
       .then((response) => setListMovies(response.data));
   }, [level]);
 
