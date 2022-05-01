@@ -13,11 +13,12 @@ const GlobalStyle: GlobalStyleComponent<{}, DefaultTheme> = createGlobalStyle`
     text-align: center;
     --main-blue: #1B1E22;
     --main-pink: #ef626c;
+    --main-yellow: #FABC2A;
   }
   
   body {
     font-weight: bold;
-    background-image: url("src/assets/background-movie.png");
+    background-image: url('/src/assets/background-movie.png');
     background-repeat: no-repeat;
     background-size: cover;
     width: 100vw;
@@ -33,6 +34,12 @@ const GlobalStyle: GlobalStyleComponent<{}, DefaultTheme> = createGlobalStyle`
 
     @media (max-width: 768px) {
       background-position: 12% 100%;
+    }
+
+    a:link, a:visited {
+      text-decoration: none;
+      color: white;
+      width: 100%;
     }
   }
 

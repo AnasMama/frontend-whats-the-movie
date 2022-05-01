@@ -1,16 +1,47 @@
-import React from "react";
+import React, { useContext } from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
+import AuthContext from "./contexts/AuthContext";
 
-const NavBar: React.FC = () => {
+const NavBar = () => {
+  const { user, setUser, auth, setAuth } = useContext(AuthContext);
+
+  const signout = () => {
+    setAuth(false);
+    setUser({
+      id: null,
+      login: null,
+      email: null,
+      profil_image: null,
+    });
+  };
+
   return (
     <NavBarContent>
       <Round>
-        <img src="src/assets/interrogation.png" alt="Point d'interrogation" />
+        <img src="/src/assets/interrogation.png" alt="Point d'interrogation" />
       </Round>
-      <UserConnection>
-        <LoginLi>Inscription</LoginLi>
-        <LoginLi color="true">Connexion</LoginLi>
-      </UserConnection>
+      {auth ? (
+        <UserConnection>
+          <Link to="/profil">
+            <LoginLi>{user.login}</LoginLi>
+          </Link>
+          <Link to="/">
+            <LoginLi onClick={signout} color="true">
+              Déconnexion
+            </LoginLi>
+          </Link>
+        </UserConnection>
+      ) : (
+        <UserConnection>
+          <Link to="/inscription">
+            <LoginLi>Inscription</LoginLi>
+          </Link>
+          <Link to="/">
+            <LoginLi color="true">Connexion</LoginLi>
+          </Link>
+        </UserConnection>
+      )}
     </NavBarContent>
   );
 };

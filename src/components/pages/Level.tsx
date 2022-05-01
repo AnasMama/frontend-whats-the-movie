@@ -1,16 +1,56 @@
-import React from "react";
+import axios from "axios";
+import React, { useContext, useEffect, useState } from "react";
+import { Params, useParams } from "react-router";
 import styled from "styled-components";
+import AuthContext from "../contexts/AuthContext";
+import ListMoviesContext from "../contexts/ListMoviesContext";
+import MovieCard from "../MovieCard";
 import { Arrow, RetourLink } from "../styles/input.styles";
 
+export interface MovieFind {
+  id: number;
+  mdb_identification: number;
+  icon: string | null;
+  french_name: string;
+  level: number;
+  theme_id: number;
+}
+
 const Level: React.FC = () => {
+  const params: Readonly<Params<string>> = useParams();
+  const idTheme: string | undefined = params.theme;
+  const { listMovies, setListMovies } = useContext(ListMoviesContext);
+  const [level, setLevel] = useState<number>(1);
+  const { user } = useContext(AuthContext);
+
+  useEffect(() => {
+    axios
+      .get(`http://localhost:5000/api/scores/users/${user.id}/themes/${idTheme}/?level=${level}`)
+      .then((response) => setListMovies(response.data));
+  }, [level]);
+
   return (
     <LevelContent>
-      <h1>Niveau 1</h1>
+      <h1>Niveau {level}</h1>
       <LevelChoosen>
-          <Arrow src='src/assets/arrow.png' alt='Fleche de navigation' />
-          <Arrow src='src/assets/arrow.png' alt='Fleche de navigation' role="true"/>
+        <Arrow
+          src="/src/assets/arrow.png"
+          alt="Fleche de navigation"
+          onClick={() => setLevel(level > 1 ? level - 1 : 3)}
+        />
+        <MoviesContent>
+          {listMovies.map((movie: MovieFind, index: number) => (
+            <MovieCard key={index} movie={movie} />
+          ))}
+        </MoviesContent>
+        <Arrow
+          src="/src/assets/arrow.png"
+          alt="Fleche de navigation"
+          role="true"
+          onClick={() => setLevel(level < 3 ? level + 1 : 1)}
+        />
       </LevelChoosen>
-      <RetourLink>Retour</RetourLink>
+      <RetourLink to={`/themes`} >Retour</RetourLink>
     </LevelContent>
   );
 };
@@ -34,6 +74,15 @@ const LevelChoosen = styled.div`
   justify-content: space-between;
   align-items: center;
   width: 100%;
+`;
+
+const MoviesContent = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  flex-wrap: wrap;
+  width: 60%;
 `;
 
 export default Level;
