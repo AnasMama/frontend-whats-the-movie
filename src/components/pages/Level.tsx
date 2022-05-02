@@ -1,5 +1,5 @@
-import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
+import axios from "axios";
 import { Params, useParams } from "react-router";
 import styled from "styled-components";
 import AuthContext from "../contexts/AuthContext";
@@ -17,15 +17,21 @@ export interface MovieFind {
 }
 
 const Level: React.FC = () => {
+  const { listMovies, setListMovies } = useContext(ListMoviesContext);
+  const { user } = useContext(AuthContext);
   const params: Readonly<Params<string>> = useParams();
   const idTheme: string | undefined = params.theme;
-  const { listMovies, setListMovies } = useContext(ListMoviesContext);
   const [level, setLevel] = useState<number>(1);
-  const { user } = useContext(AuthContext);
 
   useEffect(() => {
+    const token = localStorage.getItem("TOKEN");
+
     axios
-      .get(`http://localhost:5000/api/scores/users/${user.id}/themes/${idTheme}/?level=${level}`)
+      .get(`http://localhost:5000/api/scores/users/${user.id}/themes/${idTheme}/?level=${level}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then((response) => setListMovies(response.data));
   }, [level]);
 

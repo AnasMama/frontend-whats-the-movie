@@ -8,10 +8,11 @@ import Themes from "./components/pages/Themes";
 import Inscription from "./components/pages/Inscription";
 import GlobalStyle from "./components/styles/global.styles";
 import NotFound from "./components/pages/NotFound";
-import { useState } from "react";
 import MovieContext, { initialMovie } from "./components/contexts/MovieContext";
 import ListMovieContext from "./components/contexts/ListMoviesContext";
 import AuthContext from "./components/contexts/AuthContext";
+import { useState } from "react";
+import Loader from "./components/pages/Loader";
 
 const App: React.FC = () => {
   const [movieToFind, setMovieToFind] = useState(initialMovie);
@@ -33,7 +34,8 @@ const App: React.FC = () => {
             <BrowserRouter>
               <NavBar />
               <Routes>
-                <Route path="/" element={<Connection />} />
+              <Route path="/" element={<Loader />} />
+                <Route path="/connexion" element={<Connection />} />
                 <Route path="/inscription" element={<Inscription />} />
                 <Route path="/profil" element={auth ? <Profil /> : <Navigate to="/" state={{ from: location }} replace />} />
                 <Route

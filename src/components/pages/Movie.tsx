@@ -1,6 +1,6 @@
-import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
-import { Params, useParams } from "react-router";
+import axios from "axios";
+import { useParams } from "react-router";
 import styled from "styled-components";
 import MovieContext, { initialMovie } from "../contexts/MovieContext";
 import {
@@ -16,21 +16,21 @@ import noAccent from "../noAccent";
 import ListMoviesContext from "../contexts/ListMoviesContext";
 
 const Movie: React.FC = () => {
+  const { movieToFind, setMovieToFind } = useContext(MovieContext);
+  const { listMovies } = useContext(ListMoviesContext);
   const params = useParams<string>();
   const { theme: idTheme } = params;
   const [movie, setMovie] = useState({ id: 0, poster_path: "" });
-  const { movieToFind, setMovieToFind } = useContext(MovieContext);
   const [answer, setAnswer] = useState("");
   const [trueMovie, setTrueMovie] = useState(false);
   const [isBlur, setIsBlur] = useState(true);
 
-  const { listMovies } = useContext(ListMoviesContext);
 
   useEffect(() => {
+    const token = localStorage.getItem("TOKEN");
     axios
       .get(
-        `https://api.themoviedb.org/3/movie/${movieToFind.mdb_identification}?api_key=fb3bd5517db63a241a2ce4a3302e825d`
-      )
+        `https://api.themoviedb.org/3/movie/${movieToFind.mdb_identification}?api_key=fb3bd5517db63a241a2ce4a3302e825d`)
       .then((res) => res.data)
       .then((data) => {
         setMovie(data);
@@ -50,6 +50,9 @@ const Movie: React.FC = () => {
   const handleAnswer = (event: any) => {
     console.log(movieToFind.french_name);
     console.log(answer);
+
+    const token = localStorage.getItem("TOKEN");
+
     if (noAccent(movieToFind.french_name) === noAccent(answer)) {
       setAnswer("");
       console.log("Good !");

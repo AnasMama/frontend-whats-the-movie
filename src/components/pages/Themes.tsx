@@ -6,9 +6,15 @@ import ThemeCard from "../ThemeCard";
 
 const Themes: React.FC = () => {
   const [themeList, setThemeList] = useState([]);
+  const token = localStorage.getItem("TOKEN");
+
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/themes")
+      .get("http://localhost:5000/api/themes", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then((res) => setThemeList(res.data));
   }, []);
 
@@ -20,7 +26,7 @@ const Themes: React.FC = () => {
           <ThemeCard key={index} idTheme={theme.id} name={theme.name} />
         ))}
       </ThemeListContent>
-      <RetourLink to={`/`} >Retour</RetourLink>
+      {/* <RetourLink to={`/`} >Retour</RetourLink> */}
     </ThemeContent>
   );
 };

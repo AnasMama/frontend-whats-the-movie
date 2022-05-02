@@ -1,12 +1,13 @@
-import React, { useContext } from "react";
+import { useContext } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import AuthContext from "./contexts/AuthContext";
 
-const NavBar = () => {
+const NavBar: React.FC = () => {
   const { user, setUser, auth, setAuth } = useContext(AuthContext);
 
   const signout = () => {
+    localStorage.removeItem("TOKEN");
     setAuth(false);
     setUser({
       id: null,
@@ -84,7 +85,7 @@ const UserConnection = styled.ul`
 `;
 
 const LoginLi = styled.li`
-  background-color: ${(li) => (li.color ? "var(--main-pink)" : "none")};
+  background-color: ${(li: any) => (li.color ? "var(--main-pink)" : "none")};
   border-radius: 2rem;
   padding: 0.5rem 3rem;
 

@@ -9,8 +9,8 @@ interface MovieChoosen {
 }
 
 const MovieCard: React.FC<MovieChoosen> = ({ movie }) => {
-  const { mdb_identification: idMovie, icon, level, theme_id: idTheme } = movie;
   const { setMovieToFind } = useContext(MovieContext);
+  const { mdb_identification: idMovie, icon, level, theme_id: idTheme } = movie;
 
   return (
     <MovieCardContent
